@@ -12,7 +12,7 @@ The project is available from maven:
 	<dependency>
   		<groupId>com.mangofactory</groupId>
   		<artifactId>swagger-springmvc</artifactId>
-  		<version>0.6.0</version>
+  		<version>0.7.0-thetus-SNAPSHOT</version>
 	</dependency>
 ```	
 
