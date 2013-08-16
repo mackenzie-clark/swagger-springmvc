@@ -5,6 +5,9 @@ import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.wordnik.swagger.core.DocumentationSchema;
 
+import java.util.Map;
+
+import static com.google.common.collect.Maps.*;
 import static com.mangofactory.swagger.models.ResolvedTypes.modelName;
 
 public class ResolvedArrayMemberVisitor implements MemberVisitor {
@@ -37,7 +40,19 @@ public class ResolvedArrayMemberVisitor implements MemberVisitor {
         DocumentationSchema schema = new DocumentationSchema();
         schema.setType("Array");
         schema.setName(member.getName());
-        DocumentationSchema itemSchema = context.schema(resolvedArrayType.getArrayElementType());
+        
+        DocumentationSchema itemSchema;
+        if (resolvedArrayType.getArrayElementType().getErasedType() == Object.class) {
+             itemSchema = new DocumentationSchema();
+             itemSchema.setName("Object");
+             itemSchema.setType("Object");
+             context.getSchemaMap().put("Object", itemSchema);
+             Map<String, DocumentationSchema> propertyMap = newHashMap();
+             itemSchema.setProperties(propertyMap);
+        } else {
+            itemSchema = context.schema(resolvedArrayType.getArrayElementType());
+        }
+        
         DocumentationSchema itemSchemaRef = new DocumentationSchema();
         itemSchemaRef.ref_$eq(itemSchema.getType());
         schema.setItems(itemSchemaRef);

@@ -51,9 +51,15 @@ public class DocumentationReader {
 
     private void buildMappingDocuments(WebApplicationContext context) {
         documentation = configuration.newDocumentation(context);
-        for (RequestMappingHandlerMapping handlerMapping : handlerMappings) {
-            processMethod(handlerMapping);
-        }
+        // for (RequestMappingHandlerMapping handlerMapping : handlerMappings) {
+        //     processMethod(handlerMapping);
+        // }
+
+
+        // TODO: we have to register two identical ResponseMappingHandlerMappings for Savanna and it caused duplicates
+        // in the Swagger UI. This prevents that from happening, but a better solution would be to find a way to only
+        // register one.
+        processMethod(handlerMappings.get(0));
         isMappingBuilt = true;
     }
 
